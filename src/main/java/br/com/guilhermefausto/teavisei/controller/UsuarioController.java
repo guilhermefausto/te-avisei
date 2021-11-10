@@ -3,7 +3,6 @@ package br.com.guilhermefausto.teavisei.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,16 +23,20 @@ public class UsuarioController {
 	@Autowired
 	private PerfilRepository perfilRepository;
 	
-	@PostMapping("signup")
-	public ResponseEntity<?> inscrever(@RequestBody @Valid UsuarioCadastrarForm form){
-		try {
-			Usuario usuario = form.converter(perfilRepository);
-			usuarioRepository.save(usuario);
-			
-			return ResponseEntity.ok().body(new UsuarioCriadoDto(usuario));
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
-		}
+	@PostMapping("/signup")
+	public ResponseEntity<UsuarioCriadoDto> inscrever(@RequestBody @Valid UsuarioCadastrarForm form){
+//		try {
+//			Usuario usuario = form.converter(perfilRepository);
+//			usuarioRepository.save(usuario);
+//			
+//			return ResponseEntity.ok().body(new UsuarioCriadoDto(usuario));
+//		} catch (Exception e) {
+//			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+//		}
+		Usuario usuario = form.converter(perfilRepository);
+		usuarioRepository.save(usuario);
+		
+		return ResponseEntity.ok().body(new UsuarioCriadoDto(usuario));
 	}
 	
 }
