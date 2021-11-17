@@ -51,7 +51,6 @@ public class AvaliacaoController {
 	@Autowired
 	private TokenService tokenService;
 	
-//	public ResponseEntity<List<Avaliacao>> mostrarAvaliacoesDoEstabelecimento(@PathVariable Integer id){
 	@GetMapping("/estabelecimentos/avaliacoes/{id}")
 	public ResponseEntity<List<MediaAvaliacaoDoEstabelecimentoPorCriterio>> mostrarMediaDeAvaliacaoDoEstabelecimentoPorCriterio(@PathVariable Integer id){
 		List<MediaAvaliacaoDoEstabelecimentoPorCriterio> avaliacoes = avaliacaoRepository.buscarMediaDeAvaliacaoDoEstabelecimentoPorCriterio(id);
