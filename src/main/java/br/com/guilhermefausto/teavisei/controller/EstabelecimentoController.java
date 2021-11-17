@@ -85,4 +85,22 @@ public class EstabelecimentoController {
 		}
 		return ResponseEntity.notFound().build();
 	}
+	
+	@GetMapping("/moderacao")
+	public Page<EstabelecimentoDto> listarEsbelecimentosParaModerar(@PageableDefault(sort = "id", direction = Direction.DESC) Pageable paginacao) {	
+		return estabelecimentoRepository.listarEstabelecimentosParaModerar(paginacao);
+	}
+	
+	@PostMapping("/moderacao/{id}")
+	public ResponseEntity<?> moderarEstabelecimento(@PathVariable Integer id) {	
+		Optional<Estabelecimento> optional = estabelecimentoRepository.buscarEstabelecimentoPorIdParaModerar(id);
+		if (!optional.isPresent()) {
+			return ResponseEntity.notFound().build();
+		}
+		Estabelecimento estabelecimento = optional.get();
+		estabelecimento.setModerado(Boolean.TRUE);
+		estabelecimentoRepository.save(estabelecimento);
+		return ResponseEntity.ok(new EstabelecimentoDto(estabelecimento));
+	}
+	
 }

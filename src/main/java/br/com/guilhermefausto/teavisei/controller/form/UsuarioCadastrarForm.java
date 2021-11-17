@@ -44,7 +44,7 @@ public class UsuarioCadastrarForm {
 	
 	public Usuario converter(PerfilRepository perfilRepository) {
 		String senhaCriptografada = new BCryptPasswordEncoder().encode(senha);
-		Perfil perfilUsuario = perfilRepository.findByNome(PerfilEnum.ROLE_USUARIO.toString()).get();
+		Perfil perfilUsuario = perfilRepository.findByNome("ROLE_"+PerfilEnum.USUARIO.toString()).get();
 		
 		return new Usuario(this.nome, this.email, senhaCriptografada, perfilUsuario);
 	}

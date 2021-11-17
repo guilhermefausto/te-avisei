@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.guilhermefausto.teavisei.controller.dto.AvaliacaoCadastrarDto;
 import br.com.guilhermefausto.teavisei.controller.dto.AvaliacoesDoUsuarioDto;
 import br.com.guilhermefausto.teavisei.controller.dto.AvaliacoesPorEstabelecimentoEUsuarioDto;
 import br.com.guilhermefausto.teavisei.controller.dto.ComentariosDto;
@@ -50,15 +51,7 @@ public class AvaliacaoController {
 	@Autowired
 	private TokenService tokenService;
 	
-//	@GetMapping("/avaliacoes/{id}")
 //	public ResponseEntity<List<Avaliacao>> mostrarAvaliacoesDoEstabelecimento(@PathVariable Integer id){
-//		List<Avaliacao> avaliacoes = avaliacaoRepository.buscarAvaliacoesPorEstabelecimentoComObjetoEstabelecimento(id);
-//		if(avaliacoes.size() != 0 ) {
-//			return ResponseEntity.ok().body(avaliacoes);
-//		}
-//		return ResponseEntity.notFound().build();
-//	}
-	
 	@GetMapping("/estabelecimentos/avaliacoes/{id}")
 	public ResponseEntity<List<MediaAvaliacaoDoEstabelecimentoPorCriterio>> mostrarMediaDeAvaliacaoDoEstabelecimentoPorCriterio(@PathVariable Integer id){
 		List<MediaAvaliacaoDoEstabelecimentoPorCriterio> avaliacoes = avaliacaoRepository.buscarMediaDeAvaliacaoDoEstabelecimentoPorCriterio(id);
@@ -75,26 +68,6 @@ public class AvaliacaoController {
 		return comentarios;
 	}
 	
-//	@PostMapping("/avaliar")
-//	public ResponseEntity<?> cadastrar(@RequestBody @Valid ValidacaoListaObjetosForm<AvaliacaoCadastrarForm> form){
-//		try {
-//			List<AvaliacaoCadastrarForm> avaliacoesForm = form.getAvaliacoes();
-//			//Implementar transação ao Salvar as Avaliações
-//			List<Avaliacao> avaliacoes = new ArrayList<>();
-//			avaliacoesForm.forEach(avaliacaoForm -> {
-//				Avaliacao avaliacao = avaliacaoForm.converter(usuarioRepository, estabelecimentoRepository, criterioRepository);
-//				avaliacoes.add(avaliacao);
-//			});
-//			avaliacaoRepository.saveAll(avaliacoes);
-//			
-//			//Rever status code ResponseEntity / retornar created
-//			return ResponseEntity.ok().build();
-//		} catch (IllegalArgumentException e) {
-//			return ResponseEntity.badRequest().body(e.getMessage());
-//		}
-//
-//	}
-	
 	@PostMapping("/avaliacao")
 	public ResponseEntity<?> cadastrar(@RequestBody @Valid AvaliacaoCadastrarForm form,
 									   HttpServletRequest request){
@@ -105,7 +78,7 @@ public class AvaliacaoController {
 			Avaliacao avaliacao = form.converterAvaliacao(estabelecimentoRepository, criterioRepository);
 			avaliacao.setUsuario(usuario);
 			avaliacaoRepository.save(avaliacao);
-			return ResponseEntity.ok().body(avaliacao);
+			return ResponseEntity.ok().body(new AvaliacaoCadastrarDto(avaliacao));
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}

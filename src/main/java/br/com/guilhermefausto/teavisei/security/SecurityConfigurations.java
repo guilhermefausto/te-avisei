@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import br.com.guilhermefausto.teavisei.model.PerfilEnum;
 import br.com.guilhermefausto.teavisei.repository.UsuarioRepository;
 
 
@@ -47,10 +48,14 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests()
+					.antMatchers(HttpMethod.GET, "/estabelecimentos/moderacao/**").hasAnyRole(PerfilEnum.MODERADOR.toString(),
+																								PerfilEnum.ADMINISTRADOR.toString())
+					//.antMatchers(HttpMethod.GET, "/estabelecimentos/moderacao/**").hasRole(PerfilEnum.MODERADOR.toString())
+					
 					.antMatchers(HttpMethod.GET, "/estabelecimentos/**").permitAll()
 					
-					.antMatchers(HttpMethod.DELETE, "/estabelecimentos/*").hasRole("ADMINISTRADOR")
-					.antMatchers(HttpMethod.PUT, "/estabelecimentos/*").hasRole("ADMINISTRADOR")
+					.antMatchers(HttpMethod.DELETE, "/estabelecimentos/*").hasRole(PerfilEnum.ADMINISTRADOR.toString())
+					.antMatchers(HttpMethod.PUT, "/estabelecimentos/*").hasRole(PerfilEnum.ADMINISTRADOR.toString())
 					
 					.antMatchers(HttpMethod.POST, "/auth").permitAll()
 					.antMatchers(HttpMethod.POST, "/signup").permitAll()
