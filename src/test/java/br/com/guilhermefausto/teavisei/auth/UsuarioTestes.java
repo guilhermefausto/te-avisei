@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.http.HttpStatus;
 
+import br.com.guilhermefausto.teavisei.BaseConfigTestes;
 import io.restassured.response.Response;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -17,7 +18,7 @@ public class UsuarioTestes extends BaseConfigTestes{
 
 	@Order(1)
 	@Test
-	public void deveriaDevolver200CasoOUsarioSejaCadastrado() throws Exception {
+	public void deveriaDevolver200CasoOUsuarioSejaCadastrado() throws Exception {
 		String nome = "Nome Teste";
 		String email = "teste@email.com";
 		String senha = "123456";

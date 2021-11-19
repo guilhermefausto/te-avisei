@@ -1,9 +1,8 @@
-package br.com.guilhermefausto.teavisei.auth;
+package br.com.guilhermefausto.teavisei;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.boot.web.server.LocalServerPort;
 
-import br.com.guilhermefausto.teavisei.TeAviseiApplicationTests;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;

@@ -6,7 +6,7 @@ Algumas características:
 - Desenvolvida com Java 11 e Spring Framework
 - Autenticação Stateless com Spring Security e JJWT
 - Padrões de projetos e clean code
-- Persistência e mapeamento dos dados com Spring Data(especificação JPA) e banco de dados MariaDB
+- Persistência e mapeamento dos dados com Spring Data(especificação JPA) e banco de dados MariaDB(H2 Database para testes)
 - Gestão de dependencias do projeto com Maven
 - Tratamento de erros e exceções de forma customizada
-
+- Testes de Integração com RestAssured, MockMvc e Assertions

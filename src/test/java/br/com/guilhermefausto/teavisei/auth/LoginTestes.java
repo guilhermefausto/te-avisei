@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
+import br.com.guilhermefausto.teavisei.BaseConfigTestes;
 import io.restassured.response.Response;
 
 public class LoginTestes extends BaseConfigTestes{

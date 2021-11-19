@@ -61,10 +61,16 @@ public class AvaliacaoController {
 	}
 	
 	@GetMapping("/estabelecimentos/avaliacoes/comentarios/{id}")
-	public Page<ComentariosDto> mostrarComentariosEDataDasAvaliacaoes(@PathVariable Integer id,
+	public ResponseEntity<?> mostrarComentariosEDataDasAvaliacaoes(@PathVariable Integer id,
 				@PageableDefault(sort = "dataHoraAvaliacao", direction = Direction.DESC) Pageable paginacao){
-		Page<ComentariosDto> comentarios = avaliacaoRepository.buscarComentariosEDataDasAvaliacoes(id, paginacao);
-		return comentarios;
+		//Page<ComentariosDto> comentarios = avaliacaoRepository.buscarComentariosEDataDasAvaliacoes(id, paginacao);
+		//return comentarios;
+		
+		if(estabelecimentoRepository.findById(id).isPresent()) {
+				Page<ComentariosDto> comentarios = avaliacaoRepository.buscarComentariosEDataDasAvaliacoes(id, paginacao);
+				return ResponseEntity.ok(comentarios);
+		}
+		return ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping("/avaliacao")
@@ -98,9 +104,13 @@ public class AvaliacaoController {
 	}
 	
 	@DeleteMapping("/avaliacao/{id}")
-	public ResponseEntity<?> excluir(@PathVariable Integer id) {
+	public ResponseEntity<?> excluir(@PathVariable Integer id, HttpServletRequest request) {
+		String token = tokenService.recuperarToken(request);
+		Integer idUsuarioToken = tokenService.getIdUsuario(token);
+		
 		Optional<Avaliacao> optional = avaliacaoRepository.findById(id);
-		if(optional.isPresent()) {
+		
+		if(optional.isPresent() && idUsuarioToken == optional.get().getUsuario().getId()) {
 			avaliacaoRepository.deleteById(id);
 			return ResponseEntity.ok().build();
 		}

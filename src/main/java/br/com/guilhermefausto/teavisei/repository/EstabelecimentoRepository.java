@@ -32,7 +32,7 @@ public interface EstabelecimentoRepository extends JpaRepository<Estabelecimento
 
 	
 	@Query(value = "SELECT e.id as id, e.cidade as cidade, e.nome as nome, e.telefone as telefone, e.redes_sociais as redesSociais, "
-			+ "ifnull(avg(ac.nota),'Não avaliado') as media "
+			+ "avg(ac.nota) as media "
 			+ "FROM estabelecimentos e "
 			+ "LEFT JOIN avaliacoes a ON a.estabelecimento_id = e.id "
 			+ "LEFT JOIN avaliacoes_criterios ac ON ac.avaliacao_id = a.id "

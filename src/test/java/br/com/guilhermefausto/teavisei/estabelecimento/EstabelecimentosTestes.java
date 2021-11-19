@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.http.HttpStatus;
 
-import br.com.guilhermefausto.teavisei.auth.BaseConfigTestes;
+import br.com.guilhermefausto.teavisei.BaseConfigTestes;
 import io.restassured.response.Response;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -24,7 +24,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 	private Integer idEstabelecimento;
 	
 	@BeforeAll
-	public void setup() throws JSONException {
+	public void setupEstabelecimento() throws JSONException {
 		//Fazendo login com o usuario com Perfil de ADMINISTRADOR criado no arquivo data.sql
 		String email = "adm@email.com";
 		String senha = "123456";
@@ -208,7 +208,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 		String cidade = "BOM JARDIM";
 		
 		Response response = given(BaseConfigTestes.request)
-								.get("/estabelecimentos/?nomeCidade="+cidade);
+								.get("/estabelecimentos/?cidade="+cidade);
 		JSONObject objResponse = new JSONObject(response.asString());
 		Assertions.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
 		Assertions.assertFalse(response.asString().isEmpty());
@@ -216,6 +216,29 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 	}
 	
 	@Order(11)
+	@Test
+	public void deveriaDevolver404AoBuscarOsDetalhesDeUmEstabalecimentoQueNaoExiste() throws Exception {
+		
+		Response response = given(BaseConfigTestes.request)
+								.header("Authorization", "Bearer "+tokenUsuario)
+								.get("/estabelecimentos/99");
+		
+		Assertions.assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatusCode());
+	}
+	
+	@Order(12)
+	@Test
+	public void deveriaDevolver200ComOsDetalhesDoEstabelecimentoCarregado() throws Exception {
+		
+		Response response = given(BaseConfigTestes.request)
+								.header("Authorization", "Bearer "+tokenUsuario)
+								.get("/estabelecimentos/"+idEstabelecimento);
+
+		Assertions.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+		Assertions.assertFalse(response.asString().isEmpty());
+	}
+	
+	@Order(13)
 	@Test
 	public void deveriaDevolver400CasoOsDadosParaAlterarEstejamIncorretos() throws Exception {
 		String nome = "Estabelecimento Teste Alterado";
@@ -238,7 +261,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 		Assertions.assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatusCode());
 	}
 	
-	@Order(12)
+	@Order(14)
 	@Test
 	public void deveriaDevolver404CasoEstabelecimentoParaAlterarNaoExista() throws Exception {
 		String nome = "Estabelecimento Teste Alterado";
@@ -260,7 +283,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 		Assertions.assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatusCode());
 	}
 	
-	@Order(13)
+	@Order(15)
 	@Test
 	public void deveriaDevolver403AoAlterarEstabelecimentoCasoUsuarioNaoSejaAdministrador() throws Exception {
 		String nome = "Estabelecimento Teste Alterado";
@@ -282,7 +305,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 		Assertions.assertEquals(HttpStatus.FORBIDDEN.value(), response.getStatusCode());
 	}
 	
-	@Order(14)
+	@Order(16)
 	@Test
 	public void deveriaDevolver200CasoEstabelecimentoSejaAlterado() throws Exception {
 		String nome = "Estabelecimento Teste Alterado";
@@ -307,7 +330,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 		Assertions.assertEquals(nome, objResponse.getString("nome"));
 	}
 	
-	@Order(15)
+	@Order(17)
 	@Test
 	public void deveriaDevolver403AoExcluirEstabelecimentoCasoUsuarioNaoSejaAdministrador() throws Exception {
 		
@@ -318,7 +341,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 		Assertions.assertEquals(HttpStatus.FORBIDDEN.value(), response.getStatusCode());
 	}
 	
-	@Order(16)
+	@Order(18)
 	@Test
 	public void deveriaDevolver404AoExcluirEstabelecimentoQueNaoExiste() throws Exception {
 		
@@ -329,7 +352,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 		Assertions.assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatusCode());
 	}
 	
-	@Order(17)
+	@Order(19)
 	@Test
 	public void deveriaDevolver200AoExcluirEstabelecimento() throws Exception {
 		
