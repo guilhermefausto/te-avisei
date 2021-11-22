@@ -12,3 +12,4 @@ Algumas características:
 - Testes de Integração com RestAssured, MockMvc e Assertions
 - Implementação de paginação e ordenação
 - Deploy no Heroku com Docker
+- Documentação da API  com Swagger (https://te-avisei.herokuapp.com/swagger-ui.html)
