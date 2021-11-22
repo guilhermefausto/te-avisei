@@ -10,3 +10,5 @@ Algumas características:
 - Gestão de dependencias do projeto com Maven
 - Tratamento de erros e exceções de forma customizada
 - Testes de Integração com RestAssured, MockMvc e Assertions
+- Implementação de paginação e ordenação
+- Deploy no Heroku com Docker
