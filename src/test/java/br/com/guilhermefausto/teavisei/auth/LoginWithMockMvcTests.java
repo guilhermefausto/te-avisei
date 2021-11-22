@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import br.com.guilhermefausto.teavisei.TeAviseiApplicationTests;
 
 @AutoConfigureMockMvc
-public class LoginTestesWithMockMvc extends TeAviseiApplicationTests {
+public class LoginWithMockMvcTests extends TeAviseiApplicationTests {
 	
 	@Autowired
 	private MockMvc mockMvc;

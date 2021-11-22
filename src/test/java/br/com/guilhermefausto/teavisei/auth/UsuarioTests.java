@@ -10,17 +10,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.http.HttpStatus;
 
-import br.com.guilhermefausto.teavisei.BaseConfigTestes;
+import br.com.guilhermefausto.teavisei.BaseConfigTests;
 import io.restassured.response.Response;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class UsuarioTestes extends BaseConfigTestes{
+public class UsuarioTests extends BaseConfigTests{
 
 	@Order(1)
 	@Test
 	public void deveriaDevolver200CasoOUsuarioSejaCadastrado() throws Exception {
 		String nome = "Nome Teste";
-		String email = "teste@email.com";
+		String email = "teste_usuario@email.com";
 		String senha = "123456";
 		
 		JSONObject objRequest = new JSONObject();
@@ -29,7 +29,7 @@ public class UsuarioTestes extends BaseConfigTestes{
 		objRequest.put("senha", senha);
 		
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.body(objRequest.toString())
 								.post("/signup");
 		JSONObject objResponse = new JSONObject(response.asString());
@@ -40,10 +40,11 @@ public class UsuarioTestes extends BaseConfigTestes{
 		
 	}
 	
+	@Order(2)
 	@Test
 	public void deveriaDevolver400CasoCamposInformadosEstejamIncorretosOuVazios() throws Exception {
 		String nome = "Nome Teste";
-		String email = "teste@email.com";
+		String email = "teste_usuario@email.com";
 		String senha = "";
 		
 		JSONObject objJson = new JSONObject();
@@ -51,16 +52,17 @@ public class UsuarioTestes extends BaseConfigTestes{
 		objJson.put("email", email);
 		objJson.put("senha", senha);
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.body(objJson.toString())
 								.post("/signup");
 		Assertions.assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatusCode());	
 	}
 	
+	@Order(3)
 	@Test
 	public void deveriaDevolver409CasoUsuarioJaExista() throws Exception {
 		String nome = "Nome Teste";
-		String email = "teste@email.com";
+		String email = "teste_usuario@email.com";
 		String senha = "123456";
 		
 		JSONObject objJson = new JSONObject();
@@ -68,7 +70,7 @@ public class UsuarioTestes extends BaseConfigTestes{
 		objJson.put("email", email);
 		objJson.put("senha", senha);
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.body(objJson.toString())
 								.post("/signup");
 		

@@ -51,7 +51,6 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 					.antMatchers(HttpMethod.GET, "/estabelecimentos/moderacao/**").hasAnyRole(PerfilEnum.MODERADOR.toString(),
 																								PerfilEnum.ADMINISTRADOR.toString())
-					//.antMatchers(HttpMethod.GET, "/estabelecimentos/moderacao/**").hasRole(PerfilEnum.MODERADOR.toString())
 					
 					.antMatchers(HttpMethod.GET, "/estabelecimentos/**").permitAll()
 					
@@ -60,6 +59,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 					
 					.antMatchers(HttpMethod.POST, "/auth").permitAll()
 					.antMatchers(HttpMethod.POST, "/signup").permitAll()
+					//.antMatchers("/**").permitAll()
 					.anyRequest().authenticated()
 			.and()
 					//configurando projeto para não criar sessão
@@ -73,6 +73,6 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 	//configurações de recursos estáticos(js, css, imagens, etc)
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/**.html","/v2/api-docs","/webjars/**","/configuration/**","/swagger-resources/**");
+		web.ignoring().antMatchers("/**.html","/v3/api-docs","/v2/api-docs","/webjars/**","/configuration/**","/swagger-resources/**","/swagger-ui/**");
 	}
 }

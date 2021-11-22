@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.http.HttpStatus;
 
-import br.com.guilhermefausto.teavisei.BaseConfigTestes;
+import br.com.guilhermefausto.teavisei.BaseConfigTests;
 import io.restassured.response.Response;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class EstabelecimentosTestes extends BaseConfigTestes {
+public class EstabelecimentosTests extends BaseConfigTests {
 	
 	private String tokenAdmin;
 	private String tokenModerador;
@@ -33,7 +33,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 		objLoginAdmin.put("email", email);
 		objLoginAdmin.put("senha", senha);
 		
-		JSONObject jsonResponse = new JSONObject(given(BaseConfigTestes.request).body(objLoginAdmin.toString()).post("/auth").asString());
+		JSONObject jsonResponse = new JSONObject(given(BaseConfigTests.request).body(objLoginAdmin.toString()).post("/auth").asString());
 		tokenAdmin = jsonResponse.getString("token");
 		
 		
@@ -44,7 +44,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 		objLoginMod.put("email", emailMod);
 		objLoginMod.put("senha", senha);
 		
-		JSONObject jsonResponseMod = new JSONObject(given(BaseConfigTestes.request).body(objLoginMod.toString()).post("/auth").asString());
+		JSONObject jsonResponseMod = new JSONObject(given(BaseConfigTests.request).body(objLoginMod.toString()).post("/auth").asString());
 		tokenModerador = jsonResponseMod.getString("token");
 		
 		//Fazendo login com o usuario com Perfil de Usuario Normal criado no arquivo data.sql
@@ -54,7 +54,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 		objLoginUsu.put("email", emailUsu);
 		objLoginUsu.put("senha", senha);
 		
-		JSONObject jsonResponseUsu = new JSONObject(given(BaseConfigTestes.request).body(objLoginUsu.toString()).post("/auth").asString());
+		JSONObject jsonResponseUsu = new JSONObject(given(BaseConfigTests.request).body(objLoginUsu.toString()).post("/auth").asString());
 		tokenUsuario = jsonResponseUsu.getString("token");
 	}
 	
@@ -73,7 +73,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 		objRequest.put("telefone", telefone);
 		
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.body(objRequest.toString())
 								.post("/estabelecimentos");
 		
@@ -95,7 +95,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 		objRequest.put("telefone", telefone);
 		
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.header("Authorization", "Bearer "+tokenAdmin)
 								.body(objRequest.toString())
 								.post("/estabelecimentos");
@@ -118,7 +118,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 		objRequest.put("telefone", telefone);
 		
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.header("Authorization", "Bearer "+tokenAdmin)
 								.body(objRequest.toString())
 								.post("/estabelecimentos");
@@ -133,7 +133,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 	@Test
 	public void deveriaDevolver200ComAListaDeEstabelecimentosParaModerarComUsuarioAdministrador() throws Exception {
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.header("Authorization", "Bearer "+tokenAdmin)
 								.get("/estabelecimentos/moderacao");
 		JSONObject objResponse = new JSONObject(response.asString());
@@ -147,7 +147,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 	@Test
 	public void deveriaDevolver200ComAListaDeEstabelecimentosParaModerarComUsuarioModerador() throws Exception {
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.header("Authorization", "Bearer "+tokenModerador)
 								.get("/estabelecimentos/moderacao");
 		JSONObject objResponse = new JSONObject(response.asString());
@@ -161,7 +161,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 	@Test
 	public void deveriaDevolver403AoConsultarAListaDeEstabelecimentosParaModerarComUsuarioComum() throws Exception {
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.header("Authorization", "Bearer "+tokenUsuario)
 								.get("/estabelecimentos/moderacao");
 		
@@ -172,7 +172,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 	@Test
 	public void deveriaDevolver404AoModerarEstabelecimentoQueJaFoiModeradoOuQueNaoExiste() throws Exception {
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.header("Authorization", "Bearer "+tokenAdmin)
 								.post("/estabelecimentos/moderacao/99");
 		
@@ -183,7 +183,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 	@Test
 	public void deveriaDevolver200ComOEstabelecimentosQueFoiModeradoComUsuarioAdministrador() throws Exception {
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.header("Authorization", "Bearer "+tokenAdmin)
 								.post("/estabelecimentos/moderacao/"+idEstabelecimento);
 		
@@ -194,7 +194,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 	@Test
 	public void deveriaDevolver200ComAListaDeEstabelecimentosModerados() throws Exception {
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.get("/estabelecimentos");
 		JSONObject objResponse = new JSONObject(response.asString());
 		Assertions.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
@@ -207,7 +207,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 	public void deveriaDevolver200ComAListaDeEstabelecimentosModeradosFiltradosPorCidade() throws Exception {
 		String cidade = "BOM JARDIM";
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.get("/estabelecimentos/?cidade="+cidade);
 		JSONObject objResponse = new JSONObject(response.asString());
 		Assertions.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
@@ -219,7 +219,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 	@Test
 	public void deveriaDevolver404AoBuscarOsDetalhesDeUmEstabalecimentoQueNaoExiste() throws Exception {
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.header("Authorization", "Bearer "+tokenUsuario)
 								.get("/estabelecimentos/99");
 		
@@ -230,7 +230,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 	@Test
 	public void deveriaDevolver200ComOsDetalhesDoEstabelecimentoCarregado() throws Exception {
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.header("Authorization", "Bearer "+tokenUsuario)
 								.get("/estabelecimentos/"+idEstabelecimento);
 
@@ -253,7 +253,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 		objRequest.put("telefone", telefone);
 		
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.header("Authorization", "Bearer "+tokenAdmin)
 								.body(objRequest.toString())
 								.put("/estabelecimentos/"+idEstabelecimento);
@@ -275,7 +275,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 		objRequest.put("redesSociais", redesSociais);
 		objRequest.put("telefone", telefone);
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.header("Authorization", "Bearer "+tokenAdmin)
 								.body(objRequest.toString())
 								.put("/estabelecimentos/99");
@@ -297,7 +297,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 		objRequest.put("redesSociais", redesSociais);
 		objRequest.put("telefone", telefone);
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.header("Authorization", "Bearer "+tokenModerador)
 								.body(objRequest.toString())
 								.put("/estabelecimentos/"+idEstabelecimento);
@@ -319,7 +319,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 		objRequest.put("redesSociais", redesSociais);
 		objRequest.put("telefone", telefone);
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.header("Authorization", "Bearer "+tokenAdmin)
 								.body(objRequest.toString())
 								.put("/estabelecimentos/"+idEstabelecimento);
@@ -334,7 +334,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 	@Test
 	public void deveriaDevolver403AoExcluirEstabelecimentoCasoUsuarioNaoSejaAdministrador() throws Exception {
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.header("Authorization", "Bearer "+tokenModerador)
 								.delete("/estabelecimentos/"+idEstabelecimento);
 		
@@ -345,7 +345,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 	@Test
 	public void deveriaDevolver404AoExcluirEstabelecimentoQueNaoExiste() throws Exception {
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.header("Authorization", "Bearer "+tokenAdmin)
 								.delete("/estabelecimentos/99");
 		
@@ -356,7 +356,7 @@ public class EstabelecimentosTestes extends BaseConfigTestes {
 	@Test
 	public void deveriaDevolver200AoExcluirEstabelecimento() throws Exception {
 		
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 								.header("Authorization", "Bearer "+tokenAdmin)
 								.delete("/estabelecimentos/"+idEstabelecimento);
 		

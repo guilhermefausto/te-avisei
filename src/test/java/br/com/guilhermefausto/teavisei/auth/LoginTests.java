@@ -9,15 +9,15 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import br.com.guilhermefausto.teavisei.BaseConfigTestes;
+import br.com.guilhermefausto.teavisei.BaseConfigTests;
 import io.restassured.response.Response;
 
-public class LoginTestes extends BaseConfigTestes{
+public class LoginTests extends BaseConfigTests{
 	
 	@BeforeAll
 	public void setup() throws JSONException {
 		String nome = "Nome Teste";
-		String email = "teste@email.com";
+		String email = "teste_login@email.com";
 		String senha = "123456";
 		
 		JSONObject objRequest = new JSONObject();
@@ -26,21 +26,21 @@ public class LoginTestes extends BaseConfigTestes{
 		objRequest.put("senha", senha);
 		
 		
-		given(BaseConfigTestes.request)
+		given(BaseConfigTests.request)
 								.body(objRequest.toString())
 								.post("/signup");
 	}
 	
 	@Test
 	public void deveriaRetornarStatus200ComOTokenDeAutenticacao() throws JSONException {
-		String email = "teste@email.com";
+		String email = "teste_login@email.com";
 		String senha = "123456";
 		
 		JSONObject objRequest = new JSONObject();
 		objRequest.put("email", email);
 		objRequest.put("senha", senha);
 		
-		Response response = given(BaseConfigTestes.request).body(objRequest.toString()).post("/auth");
+		Response response = given(BaseConfigTests.request).body(objRequest.toString()).post("/auth");
 		
 		JSONObject objResponse = new JSONObject(response.asString());
 		
@@ -50,14 +50,14 @@ public class LoginTestes extends BaseConfigTestes{
 	
 	@Test
 	public void deveriaRetornarStatus401CasoUsuarioOuSenhaEstejamIncorretos() throws JSONException {
-		String email = "teste@email.com";
+		String email = "teste_login@email.com";
 		String senha = "123";
 		
 		JSONObject objRequest = new JSONObject();
 		objRequest.put("email", email);
 		objRequest.put("senha", senha);
 		
-		Response response = given(BaseConfigTestes.request).body(objRequest.toString()).post("/auth");
+		Response response = given(BaseConfigTests.request).body(objRequest.toString()).post("/auth");
 		
 		Assertions.assertEquals(HttpStatus.UNAUTHORIZED.value(), response.getStatusCode());
 	}

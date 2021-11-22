@@ -10,10 +10,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import br.com.guilhermefausto.teavisei.BaseConfigTestes;
+import br.com.guilhermefausto.teavisei.BaseConfigTests;
 import io.restassured.response.Response;
 
-public class CriterioTestes extends BaseConfigTestes {
+public class CriterioTests extends BaseConfigTests {
 
 	private String tokenUsuario;
 	
@@ -27,13 +27,13 @@ public class CriterioTestes extends BaseConfigTestes {
 		objLoginUsu.put("email", emailUsu);
 		objLoginUsu.put("senha", senha);
 		
-		JSONObject jsonResponseUsu = new JSONObject(given(BaseConfigTestes.request).body(objLoginUsu.toString()).post("/auth").asString());
+		JSONObject jsonResponseUsu = new JSONObject(given(BaseConfigTests.request).body(objLoginUsu.toString()).post("/auth").asString());
 		tokenUsuario = jsonResponseUsu.getString("token");
 	}
 	
 	@Test
 	public void deveriaRetornar403AoTentarBuscarCriteriosSemUsuarioLogado() throws JSONException {
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 				.get("/criterios");
 		
 		Assertions.assertEquals(HttpStatus.FORBIDDEN.value(), response.getStatusCode());
@@ -41,7 +41,7 @@ public class CriterioTestes extends BaseConfigTestes {
 	
 	@Test
 	public void deveriaRetornar200ComAListaDeCriteriosCadastrados() throws JSONException {
-		Response response = given(BaseConfigTestes.request)
+		Response response = given(BaseConfigTests.request)
 				.header("Authorization", "Bearer "+tokenUsuario)
 				.get("/criterios");
 		JSONArray objJson = new JSONArray(response.asString());
