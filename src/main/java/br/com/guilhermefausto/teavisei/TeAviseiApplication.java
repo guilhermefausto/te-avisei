@@ -11,6 +11,7 @@ public class TeAviseiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(TeAviseiApplication.class, args);
+		System.out.println("texto");
 	}
 
 }
